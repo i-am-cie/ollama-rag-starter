@@ -39,26 +39,7 @@ Download Ollama from ollama.com, then run:
 
 Prefer a browser? Run `python app.py` for a Gradio web UI:
 
-```
-┌─────────────────────────────────────────────────────┐
-│  🦙 Ollama RAG Starter                              │
-│  Ask questions over your local documents — offline  │
-├──────────────────────┬──────────────────────────────┤
-│  You: What is RAG?   │  📁 Documents                │
-│                      │   • sample.txt                │
-│  Bot: RAG works by   │                              │
-│  splitting docs,    │  ⚙️ Config                    │
-│  embedding them,     │   • Chat: qwen2.5:7b          │
-│  finding the closest │   • Embed: nomic-embed-text   │
-│  chunks, then asking │   • Top-K: 3                  │
-│  the LLM based on    │                              │
-│  that context.       │                              │
-│                      │                              │
-│  Sources: sample.txt │                              │
-└──────────────────────┴──────────────────────────────┘
-```
-
-> 📸 *Replace the ASCII above with a real screenshot/GIF once you've run it locally — see [`docs/DEMO-CHECKLIST.md`](docs/DEMO-CHECKLIST.md).*
+![Web UI Screenshot](docs/webui-screenshot.png)
 
 ---
 
