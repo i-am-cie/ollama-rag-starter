@@ -1,0 +1,32 @@
+Welcome to ollama-rag-starter!
+
+This is a sample document. Replace this file (or add your own .txt / .md files)
+in the docs/ directory with your own notes, papers, books, or documentation.
+
+What is RAG?
+RAG stands for Retrieval-Augmented Generation. It is a technique that lets a
+large language model (LLM) answer questions based on your own private documents
+instead of only what it was trained on. The process works like this:
+
+1. You split your documents into small chunks of text.
+2. You convert each chunk into a vector (embedding) using an embedding model.
+3. When someone asks a question, you convert the question into a vector too.
+4. You find the chunks whose vectors are closest to the question vector.
+5. You stuff those chunks into the prompt and ask the LLM to answer.
+
+What is Ollama?
+Ollama is a free, open-source tool that lets you run large language models
+locally on your own computer. It supports models like Llama 3, Qwen 2.5,
+Mistral, Phi, and many others. You install it once, run `ollama pull qwen2.5:7b`,
+and then talk to the model via a local API at http://localhost:11434.
+
+Why run RAG locally?
+- Privacy: your documents never leave your machine.
+- Cost: no API bills per token.
+- Offline: works on a plane, in a basement, anywhere.
+- Control: you pick the model, the chunk size, the retrieval logic.
+
+Try asking questions like:
+- "What does RAG stand for?"
+- "How do I install Ollama?"
+- "Why should I run RAG locally?"
