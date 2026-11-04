@@ -11,23 +11,7 @@ A ~100-line RAG template powered by [Ollama](https://ollama.com). Drop in your `
 
 ---
 
-> 📸 **Screenshot goes here** — run the project and drop a terminal GIF / PNG below this line.
-
-```
-$ python rag.py
-
-Indexing documents in ./docs ...
-Indexed 12 chunks.
-
-Ask questions (type 'exit' to quit):
-
-> How do I install Ollama?
-
-Install Ollama from ollama.com/download, then run `ollama pull qwen2.5:7b`
-to download a model. That's it — no API keys, no cloud setup.
-
--- sources: ['sample.txt'] (scores: [0.721, 0.615, 0.588])
-```
+![Web UI screenshot](docs/screenshot.jpg)
 
 ---
 
@@ -48,8 +32,8 @@ Read it in 5 minutes, then make it yours.
 | API keys needed | None | OpenAI / Cohere / etc. |
 | Runs offline | ✅ | ❌ |
 | Vector database | No (numpy arrays) | Yes (Docker / server) |
+| Web UI | Gradio (optional) | Separate setup |
 | Time to first answer | < 2 min | 20 min |
-| Read the whole codebase | ✅ One sitting | 😵 |
 
 ## Quick Start
 
@@ -63,18 +47,33 @@ ollama pull qwen2.5:7b
 
 > **Low VRAM?** Use `qwen2.5:3b` (~2 GB) — change `CHAT_MODEL` in `rag.py`.
 
-### 2. Clone & run
+### 2. Clone & install
 
 ```bash
 git clone https://github.com/i-am-cie/ollama-rag-starter.git
 cd ollama-rag-starter
 pip install -r requirements.txt
+```
+
+### 3a. CLI mode
+
+```bash
 python rag.py
 ```
 
-### 3. Add your own docs
+### 3b. Web UI mode
 
-Drop any `.txt` or `.md` files into `docs/` and restart. That's the whole setup.
+```bash
+pip install gradio
+python app.py
+# Open http://localhost:7860
+```
+
+> **No Ollama?** Try `python app.py --demo` to see the UI with mock answers.
+
+### 4. Add your docs
+
+Drop any `.txt` or `.md` files into `docs/` and restart.
 
 ## Configuration
 
@@ -104,16 +103,17 @@ No database. No server. No network after model download.
 ollama-rag-starter/
 ├── docs/              # your documents go here
 │   └── sample.txt
-├── rag.py             # the entire RAG pipeline
+├── rag.py             # CLI version (the entire RAG pipeline)
+├── app.py             # Gradio web UI
 ├── requirements.txt
 └── README.md
 ```
 
 ## Roadmap
 
+- [x] Gradio web UI
 - [ ] PDF support (`pypdf`)
 - [ ] Persist embeddings to disk
-- [ ] Gradio web UI
 - [ ] Sentence-aware chunking
 - [ ] Config file (YAML)
 
