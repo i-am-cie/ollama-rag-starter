@@ -2,8 +2,6 @@
 
 > **Ask questions over your own documents. Fully local. No API keys. No LangChain.**
 
-A ~100-line RAG template powered by [Ollama](https://ollama.com). Drop in your `.txt` / `.md` files, run one command, get answers with sources — everything runs on your machine.
-
 ![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Ollama](https://img.shields.io/badge/Ollama-powered-orange.svg)
@@ -11,7 +9,56 @@ A ~100-line RAG template powered by [Ollama](https://ollama.com). Drop in your `
 
 ---
 
-![Web UI screenshot](docs/screenshot.jpg)
+## What it looks like
+
+Drop your notes into a folder, ask in plain English, get answers with sources — everything runs on your machine:
+
+```
+$ python rag.py
+Indexing documents in ./docs ...
+Indexed 12 chunks from 3 file(s).
+
+Ask questions (type 'exit' to quit):
+
+> What is RAG?
+
+RAG (Retrieval-Augmented Generation) is a technique that retrieves relevant
+document chunks before answering, so the LLM grounds its response in your
+own data instead of hallucinating.
+
+-- sources: ['sample.txt'] (scores: [0.721, 0.615, 0.588])
+
+> How do I install Ollama?
+
+Download Ollama from ollama.com, then run:
+  ollama pull nomic-embed-text
+  ollama pull qwen2.5:7b
+
+-- sources: ['sample.txt'] (scores: [0.689, 0.554, 0.473])
+```
+
+Prefer a browser? Run `python app.py` for a Gradio web UI:
+
+```
+┌─────────────────────────────────────────────────────┐
+│  🦙 Ollama RAG Starter                              │
+│  Ask questions over your local documents — offline  │
+├──────────────────────┬──────────────────────────────┤
+│  You: What is RAG?   │  📁 Documents                │
+│                      │   • sample.txt                │
+│  Bot: RAG works by   │                              │
+│  splitting docs,    │  ⚙️ Config                    │
+│  embedding them,     │   • Chat: qwen2.5:7b          │
+│  finding the closest │   • Embed: nomic-embed-text   │
+│  chunks, then asking │   • Top-K: 3                  │
+│  the LLM based on    │                              │
+│  that context.       │                              │
+│                      │                              │
+│  Sources: sample.txt │                              │
+└──────────────────────┴──────────────────────────────┘
+```
+
+> 📸 *Replace the ASCII above with a real screenshot/GIF once you've run it locally — see [`docs/DEMO-CHECKLIST.md`](docs/DEMO-CHECKLIST.md).*
 
 ---
 
