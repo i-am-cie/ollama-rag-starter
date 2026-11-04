@@ -1,90 +1,80 @@
 # ollama-rag-starter
 
-A lightweight, fully local RAG (Retrieval-Augmented Generation) template powered by [Ollama](https://ollama.com).
+> **Ask questions over your own documents. Fully local. No API keys. No LangChain.**
 
-Ask questions over your own documents — **no API keys, no cloud, no external dependencies beyond Ollama itself**.
+A ~100-line RAG template powered by [Ollama](https://ollama.com). Drop in your `.txt` / `.md` files, run one command, get answers with sources — everything runs on your machine.
 
 ![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Ollama](https://img.shields.io/badge/Ollama-powered-orange.svg)
+![Size](https://img.shields.io/badge/code-~100%20lines-brightgreen.svg)
 
 ---
 
-## Why another RAG template?
-
-Most RAG demos stack on LangChain, ChromaDB, OpenAI API keys, and vector databases you have to deploy. This one strips it down to:
-
-- **One Python file** (~80 lines) you can actually read in one sitting
-- **Numpy** for vector search — no vector DB needed
-- **Ollama** for both embeddings and chat — everything runs on your machine
-- Works with plain `.txt` / `.md` files dropped into `docs/`
-
-## Features
-
-- 📄 Load documents from a folder (`.txt`, `.md`)
-- ✂️ Simple character-based chunking with overlap
-- 🔢 Embeddings via `nomic-embed-text` (local, via Ollama)
-- 🔍 Cosine-similarity retrieval with numpy
-- 💬 Conversational CLI — ask questions, get sourced answers
-- 🔎 Shows which source files and similarity scores were used
-
-## Quick Start
-
-### 1. Prerequisites
-
-Install [Ollama](https://ollama.com/download), then pull the two models:
-
-```bash
-ollama pull nomic-embed-text
-ollama pull qwen2.5:7b
-```
-
-> **GPU/VRAM tip**: Qwen2.5 7B needs ~5–6 GB VRAM. If you have less, use `qwen2.5:3b` instead (edit `CHAT_MODEL` in `rag.py`).
-
-### 2. Install dependencies
-
-```bash
-git clone https://github.com/i-am-cie/ollama-rag-starter.git
-cd ollama-rag-starter
-pip install -r requirements.txt
-```
-
-### 3. Drop your documents
-
-Put any `.txt` or `.md` files into the `docs/` folder. A sample file is included.
-
-### 4. Run
-
-```bash
-python rag.py
-```
-
-You'll see:
+> 📸 **Screenshot goes here** — run the project and drop a terminal GIF / PNG below this line.
 
 ```
+$ python rag.py
+
 Indexing documents in ./docs ...
 Indexed 12 chunks.
 
 Ask questions (type 'exit' to quit):
 
-> What is Ollama?
+> How do I install Ollama?
 
-Ollama is a tool that lets you run large language models locally on your own computer...
+Install Ollama from ollama.com/download, then run `ollama pull qwen2.5:7b`
+to download a model. That's it — no API keys, no cloud setup.
 
 -- sources: ['sample.txt'] (scores: [0.721, 0.615, 0.588])
 ```
 
-## Project Structure
+---
 
+## Why this exists
+
+Every RAG tutorial on the internet tells you to install LangChain, spin up ChromaDB,
+get an OpenAI API key, and wire together 10 abstract classes you'll never read again.
+
+**This repo is the opposite.** One Python file. Numpy for search. Ollama for models.
+Read it in 5 minutes, then make it yours.
+
+## Comparison
+
+| | This repo | Typical RAG tutorial |
+|---|---|---|
+| Lines of code | ~100 | 500+ |
+| Dependencies | `ollama`, `numpy` | LangChain, ChromaDB, OpenAI SDK, +10 |
+| API keys needed | None | OpenAI / Cohere / etc. |
+| Runs offline | ✅ | ❌ |
+| Vector database | No (numpy arrays) | Yes (Docker / server) |
+| Time to first answer | < 2 min | 20 min |
+| Read the whole codebase | ✅ One sitting | 😵 |
+
+## Quick Start
+
+### 1. Install Ollama + models
+
+```bash
+# Install from https://ollama.com/download
+ollama pull nomic-embed-text
+ollama pull qwen2.5:7b
 ```
-ollama-rag-starter/
-├── docs/              # Drop your .txt / .md files here
-│   └── sample.txt
-├── rag.py             # The entire RAG pipeline (single file)
-├── requirements.txt
-├── .gitignore
-└── README.md
+
+> **Low VRAM?** Use `qwen2.5:3b` (~2 GB) — change `CHAT_MODEL` in `rag.py`.
+
+### 2. Clone & run
+
+```bash
+git clone https://github.com/i-am-cie/ollama-rag-starter.git
+cd ollama-rag-starter
+pip install -r requirements.txt
+python rag.py
 ```
+
+### 3. Add your own docs
+
+Drop any `.txt` or `.md` files into `docs/` and restart. That's the whole setup.
 
 ## Configuration
 
@@ -92,37 +82,52 @@ Edit the constants at the top of `rag.py`:
 
 | Variable | Default | What it does |
 |---|---|---|
-| `EMBED_MODEL` | `nomic-embed-text` | Ollama model for embeddings |
-| `CHAT_MODEL` | `qwen2.5:7b` | Ollama model for answering |
-| `CHUNK_SIZE` | `500` | Characters per text chunk |
+| `EMBED_MODEL` | `nomic-embed-text` | Ollama embedding model |
+| `CHAT_MODEL` | `qwen2.5:7b` | Ollama chat model |
+| `CHUNK_SIZE` | `500` | Characters per chunk |
 | `CHUNK_OVERLAP` | `80` | Overlap between chunks |
-| `TOP_K` | `3` | How many chunks to retrieve |
+| `TOP_K` | `3` | Chunks retrieved per query |
 
-## How It Works
+## How it works
 
 ```
-Your docs → chunk → embed (Ollama) → numpy array storage
-                                              ↑
-Question → embed → cosine similarity → top-K chunks → feed to LLM → answer
+Your docs → chunk → embed (Ollama) → numpy array
+                                          ↑
+Question → embed → cosine similarity → top-K → prompt → LLM → answer
 ```
 
-No database. No server. No network calls after the models are pulled.
+No database. No server. No network after model download.
+
+## Project structure
+
+```
+ollama-rag-starter/
+├── docs/              # your documents go here
+│   └── sample.txt
+├── rag.py             # the entire RAG pipeline
+├── requirements.txt
+└── README.md
+```
 
 ## Roadmap
 
-- [ ] PDF support (via `pypdf`)
-- [ ] Persist embeddings to disk (avoid re-indexing every run)
-- [ ] Web UI (Gradio / Streamlit)
-- [ ] Config file (YAML / .env)
-- [ ] Citation highlighting in answers
+- [ ] PDF support (`pypdf`)
+- [ ] Persist embeddings to disk
+- [ ] Gradio web UI
+- [ ] Sentence-aware chunking
+- [ ] Config file (YAML)
 
 ## Contributing
 
-Issues and PRs are welcome. Good first PRs:
-- Add a new document loader (PDF, HTML, Notion export)
-- Improve chunking (sentence-aware instead of character-based)
-- Add unit tests
+PRs welcome. Good first issues:
+- PDF loader
+- Sentence-based chunking
+- Unit tests
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](./LICENSE) — do whatever you want.
+
+---
+
+**⭐ Star this repo if it saves you an afternoon.** It helps others find it.
