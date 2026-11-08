@@ -39,6 +39,10 @@ ollama pull qwen2.5:7b
 
 `qwen2.5:3b` needs noticeably less RAM/VRAM if `7b` is too large.
 
+The web UI uses Gradio (`gradio>=4.44.0`, pinned in `requirements.txt` because
+`app.py` passes `placeholder` to `gr.Chatbot`); the CLI alone only needs
+`ollama` and `numpy`.
+
 ## Install
 
 ```bash
