@@ -1,2 +1,6 @@
+# Core RAG pipeline (rag.py)
 ollama>=0.4.0
 numpy>=1.24.0
+
+# Gradio web UI (app.py); app.py --demo also needs it
+gradio>=4.0.0

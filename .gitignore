@@ -1,7 +1,28 @@
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
 .venv/
 venv/
+env/
+
+# Environment variables / secrets
 .env
-*.egg-info/
+.env.*
+
+# Tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editors
+.idea/
+.vscode/
 .DS_Store
+
+# Note: docs/ is tracked on purpose — it holds user documents (sample.txt),
+# the demo screenshot, and the demo-shot checklist, not generated artefacts.

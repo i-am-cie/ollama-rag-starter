@@ -107,6 +107,9 @@ def init_index():
         return "✅ Demo mode loaded (no Ollama needed). Ask a question!"
     try:
         chunks, emb = build_index()
+        if not chunks:
+            state["chunks"], state["emb"] = [], None
+            return "⚠️ No .txt/.md files found in ./docs/ — add documents first."
         state["chunks"], state["emb"] = chunks, emb
         return f"✅ Indexed {len(chunks)} chunks from {len(set(c[0] for c in chunks))} file(s)."
     except Exception as e:
@@ -118,7 +121,9 @@ def ask(question, history):
         ans, sources, scores = demo_answer(question)
     else:
         if not state["chunks"]:
-            init_index()
+            status = init_index()
+            if not state["chunks"]:
+                return status
         ans, sources, scores = real_answer(question, state["chunks"], state["emb"])
     sources_md = " | ".join(f"`{s}` ({sc})" for s, sc in zip(sources, scores))
     return f"{ans}\n\n---\n*Sources: {sources_md}*"
